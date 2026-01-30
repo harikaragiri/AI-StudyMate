@@ -37,6 +37,6 @@ if __name__ == "__main__":
     user_query = input("Ask a question: ")
     results = semantic_search(user_query)
 
-    print("\n🔍 Top Matches:\n")
+    print("\n Top Matches:\n")
     for r in results:
         print("-", r["text"])
