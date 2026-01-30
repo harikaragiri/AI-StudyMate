@@ -42,13 +42,13 @@ AI-StudyMate-Endee/
 git clone https://github.com/harikaragiri/AI-StudyMate.git
 cd AI-StudyMate
 
-2 Install Dependencies
+2. Install Dependencies
 pip install -r requirements.txt
 
-3 Run the Project
+3. Run the Project
 streamlit run app.py
 
-4 Open Browser
+4. Open Browser
 http://localhost:8501
 
 ## How It Works (Technical Overview):
