@@ -1,0 +1,5 @@
+Artificial Intelligence enables machines to simulate human intelligence. Machine Learning is a subset of AI that allows systems to learn from data. Supervised learning uses labeled data, while unsupervised learning finds patterns without labels.
+
+Neural networks are inspired by the human brain and consist of input, hidden, and output layers. Deep learning uses multi-layer neural networks.
+
+RAG (Retrieval Augmented Generation) combines vector search with language models to generate accurate answers from external knowledge.

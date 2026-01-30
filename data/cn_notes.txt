@@ -1,0 +1,5 @@
+Computer Networks allow computers to communicate and share resources. TCP is connection-oriented and reliable, while UDP is connectionless and faster but unreliable. OSI Model has 7 layers: Physical, Data Link, Network, Transport, Session, Presentation, and Application.
+
+IP addressing uniquely identifies devices in a network. DNS translates domain names into IP addresses. HTTP is used for web communication, while HTTPS adds encryption for security.
+
+Routing protocols like RIP, OSPF, and BGP determine best paths for data transmission.

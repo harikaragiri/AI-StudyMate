@@ -1,0 +1,5 @@
+Java is an object-oriented programming language. Key OOP concepts include Encapsulation, Inheritance, Polymorphism, and Abstraction. A class is a blueprint for objects, and an object is an instance of a class.
+
+Inheritance allows one class to acquire properties of another. Polymorphism allows methods to behave differently based on object type. The JVM executes Java bytecode.
+
+Exception handling in Java uses try, catch, and finally blocks to manage runtime errors.
