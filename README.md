@@ -3,7 +3,7 @@ AI StudyMate – AI Powered Study Assistant
 AI StudyMate is a smart AI-powered study assistant that helps students search answers from notes, upload study materials, and summarize text using semantic search and natural language processing.
 This project was built as part of the Endee.io Assignment.
 
-FEATURES
+## FEATURES
  Ask questions and get answers using semantic search
  Upload PDF or TXT notes
  AI-based sentence embedding search
@@ -12,7 +12,7 @@ FEATURES
  Clean and user-friendly Streamlit UI
  Fast and lightweight local vector database
 
-TECH STACK
+## TECH STACK
 Python 3.12
 Streamlit (Frontend UI)
 Sentence Transformers (AI Embeddings)
@@ -20,7 +20,7 @@ PyPDF2 (PDF Text Extraction)
 NumPy
 JSON Database
 
-PROJECT STRUCTURE
+## PROJECT STRUCTURE
 AI-StudyMate-Endee/
 ├── app.py
 ├── endee_db.json
@@ -28,10 +28,10 @@ AI-StudyMate-Endee/
 ├── README.md
 └── screenshots/
 
-INSTALLATION & SETUP
+## INSTALLATION & SETUP
 1 Clone the Repository
-git clone 
-cd AI-StudyMate-Endee
+git clone https://github.com/harikaragiri/AI-StudyMate.git
+cd AI-StudyMate
 
 2 Install Dependencies
 pip install -r requirements.txt
@@ -41,3 +41,6 @@ streamlit run app.py
 
 4 Open Browser
 http://localhost:8501
+
+## Submission Note
+This project is submitted as part of the Endee.io assignment and demonstrates semantic search, document ingestion, and AI-powered study assistance using local embeddings.
