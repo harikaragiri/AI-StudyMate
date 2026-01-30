@@ -4,6 +4,7 @@ import json
 import numpy as np
 import os
 import PyPDF2
+from datetime import datetime
 
 # ---- Page Config ----
 st.set_page_config(
@@ -13,22 +14,19 @@ st.set_page_config(
 )
 
 # ---- Title ----
-st.markdown(
-    """
-    <div style='text-align:center'>
-        <h1 style='color:#4B0082;'> AI StudyMate</h1>
-        <p style='font-size:18px; color:#555;'>Your personal AI-powered study assistant</p>
-    </div>
-    """, 
-    unsafe_allow_html=True
-)
+st.markdown("""
+<div style='text-align:center'>
+    <h1 style='color:#4B0082;'> AI StudyMate</h1>
+    <p style='font-size:18px; color:#555;'>Your personal AI-powered study assistant</p>
+</div>
+""", unsafe_allow_html=True)
 
 DB_PATH = "endee_db.json"
 HISTORY_PATH = "search_history.json"
 
 # ---- Sidebar Navigation ----
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Search Questions", "Upload Notes", "Summarize Text"])
+page = st.sidebar.radio("Go to", ["Search Questions", "Upload Notes", "Summarize Text", "Search History"])
 
 # ---- Load Embedding Model ----
 @st.cache_resource
@@ -68,7 +66,7 @@ def semantic_search(query, texts, embeddings, top_k=3):
         np.linalg.norm(embeddings, axis=1) * np.linalg.norm(query_embedding)
     )
     top_indices = np.argsort(scores)[-top_k:][::-1]
-    return [{"text": texts[idx], "score": float(scores[idx])} for idx in top_indices]
+    return [{"text": texts[idx], "score": float(scores[idx]), "idx": idx} for idx in top_indices]
 
 def extract_text_from_pdf(uploaded_file):
     pdf_reader = PyPDF2.PdfReader(uploaded_file)
@@ -90,6 +88,22 @@ def chunk_text(text, chunk_size=300, overlap=50):
         start += chunk_size - overlap
     return chunks
 
+# ---- Search History Functions ----
+def load_history():
+    if os.path.exists(HISTORY_PATH):
+        with open(HISTORY_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+def save_history(query):
+    history = load_history()
+    history.insert(0, {
+        "query": query,
+        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    })
+    with open(HISTORY_PATH, "w", encoding="utf-8") as f:
+        json.dump(history[:50], f, indent=2)
+
 # ---- Summarization Function ----
 def summarize_text(text, top_k=3):
     sentences = [s.strip() for s in text.split(". ") if s.strip()]
@@ -107,107 +121,99 @@ def summarize_text(text, top_k=3):
         summary += "."
     return summary
 
-# ---- Load / Save Search History ----
-def load_history():
-    if os.path.exists(HISTORY_PATH):
-        with open(HISTORY_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
+# ===================== PAGES ===================== #
 
-def save_history(history):
-    with open(HISTORY_PATH, "w", encoding="utf-8") as f:
-        json.dump(history, f, indent=2)
-
-# ---- Pages ----
+# ---- Search Questions ----
 if page == "Search Questions":
-    st.subheader(" Ask Your Question")
+    st.subheader("Ask Your Question")
     texts, embeddings, metadata = load_vector_db()
 
-    # Load search history
-    search_history = load_history()
-
-    query = st.text_input(
-        " Type your question here...",
-        placeholder="e.g. Explain Newton's third law"
-    )
+    query = st.text_input("Type your question here...")
 
     if st.button("Search Answer", type="primary"):
         if not texts:
-            st.warning(" No notes uploaded yet. Please upload notes first!")
+            st.warning("No notes uploaded yet.")
         elif query.strip():
-            # Save query to history
-            search_history.append(query)
-            save_history(search_history)
+            save_history(query)
 
             results = semantic_search(query, texts, embeddings)
-            st.subheader(" Top Matching Answers:")
+            st.subheader("Top Matching Answers:")
 
-            for i, res in enumerate(results, 1):
-                source = metadata[i-1].get("source", "Unknown") if metadata else "Unknown"
-                st.markdown(
-                    f"""
-                    <div style='background-color:#F5F5F5; padding:15px; border-radius:10px; margin-bottom:10px;'>
-                        <h4 style='color:#4B0082;'>Answer {i}</h4>
-                        <p style='font-size:16px; color:#333;'>{res['text']}</p>
-                        <p style='font-size:13px; color:#888;'>Source: {source} | Score: {res['score']:.3f}</p>
-                    </div>
-                    """, 
-                    unsafe_allow_html=True
-                )
+            for idx, res in enumerate(results, 1):
+                source = metadata[res['idx']].get("source", "Unknown") if metadata else "Unknown"
+                st.markdown(f"""
+                <div style='background-color:#F5F5F5; padding:15px; border-radius:10px; margin-bottom:10px;'>
+                    <h4 style='color:#4B0082;'>Answer {idx}</h4>
+                    <p style='font-size:16px; color:#000000;'>{res['text']}</p>
+                    <p style='font-size:13px; color:#555;'>Source: {source} | Score: {res['score']:.3f}</p>
+                </div>
+                """, unsafe_allow_html=True)
         else:
-            st.warning(" Please enter a question.")
+            st.warning("Please enter a question.")
 
-    # Display search history
-    if search_history:
-        st.subheader("Your Search History:")
-        for i, q in enumerate(reversed(search_history), 1):
-            st.write(f"{i}. {q}")
-
+# ---- Upload Notes ----
 elif page == "Upload Notes":
-    st.subheader(" Upload Your Study Notes")
-    uploaded_file = st.file_uploader(
-        "Choose a PDF or TXT file",
-        type=["pdf", "txt"],
-        help="Upload study notes in PDF or TXT format"
-    )
+    st.subheader("Upload Study Notes")
+
+    uploaded_file = st.file_uploader("Upload PDF or TXT", type=["pdf", "txt"])
 
     if uploaded_file:
         if uploaded_file.type == "application/pdf":
             text = extract_text_from_pdf(uploaded_file)
-        elif uploaded_file.type == "text/plain":
-            text = str(uploaded_file.read(), "utf-8")
         else:
-            text = ""
+            text = str(uploaded_file.read(), "utf-8")
 
         if text.strip():
-            st.success(" File uploaded successfully! Preview below:")
-            st.text_area(
-                "Preview",
-                text,
-                height=300,
-                max_chars=None
-            )
+            st.success("File uploaded successfully!")
+            st.text_area("Preview", text, height=250)
 
-            chunks = chunk_text(text, chunk_size=300, overlap=50)
+            chunks = chunk_text(text)
             texts, embeddings, metadata = load_vector_db()
 
             for chunk in chunks:
-                new_embedding = model.encode([chunk])[0]
+                emb = model.encode([chunk])[0]
                 texts.append(chunk)
-                embeddings = np.vstack([embeddings, new_embedding]) if embeddings.size else np.array([new_embedding])
+                embeddings = np.vstack([embeddings, emb]) if embeddings.size else np.array([emb])
                 metadata.append({"source": uploaded_file.name})
 
             save_vector_db(texts, embeddings, metadata)
-            st.success(f" Notes added as {len(chunks)} chunks to the database!")
+            st.success(f"Added {len(chunks)} chunks to database!")
 
+# ---- Summarize Text ----
 elif page == "Summarize Text":
     st.subheader("Text Summarizer")
-    input_text = st.text_area("Paste your text here :", height=200)
+
+    input_text = st.text_area("Paste text here:", height=200)
 
     if st.button("Summarize"):
         if input_text.strip():
-            summary = summarize_text(input_text, top_k=3)
-            st.success("Summary:")
-            st.write(summary)
+            summary = summarize_text(input_text)
+            st.markdown(f"""
+            <div style='background-color:#F5F5F5; padding:15px; border-radius:10px; margin-top:10px;'>
+                <p style='font-size:16px; color:#000000;'>{summary}</p>
+            </div>
+            """, unsafe_allow_html=True)
         else:
-            st.warning(" Please enter some text to summarize!")
+            st.warning("Enter some text.")
+
+# ---- Search History Page ----
+elif page == "Search History":
+    st.subheader("Search History")
+
+    history = load_history()
+
+    if not history:
+        st.info("No search history yet.")
+    else:
+        for item in history:
+            st.markdown(f"""
+            <div style='background:#F9F9F9; padding:10px; border-radius:8px; margin-bottom:6px;'>
+                <b style='color:#000000;'>{item['query']}</b><br>
+                <small style='color:#555;'>{item['time']}</small>
+            </div>
+            """, unsafe_allow_html=True)
+
+        if st.button("Clear History"):
+            with open(HISTORY_PATH, "w") as f:
+                json.dump([], f)
+            st.success("History cleared!")
