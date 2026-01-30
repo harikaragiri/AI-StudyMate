@@ -1,4 +1,4 @@
-AI StudyMate – AI Powered Study Assistant
+## AI StudyMate – AI Powered Study Assistant
 
 AI StudyMate is an AI-powered study assistant designed to help students and learners search answers from notes, upload study materials, and generate concise summaries using semantic search and natural language processing.
 This project demonstrates real-world AI application, efficient document ingestion, vector-based retrieval, and a clean Streamlit user interface.
