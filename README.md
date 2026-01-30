@@ -38,7 +38,7 @@ AI-StudyMate-Endee/
 
 
 ## INSTALLATION & SETUP
-1 Clone the Repository
+1. Clone the Repository
 git clone https://github.com/harikaragiri/AI-StudyMate.git
 cd AI-StudyMate
 
