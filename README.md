@@ -27,6 +27,7 @@ Built as part of the Endee.io Technical Assignment, this project showcases skill
 
 ## PROJECT STRUCTURE
 AI-StudyMate-Endee/
+
 ├── app.py                 
 ├── ingest.py             
 ├── query.py              
