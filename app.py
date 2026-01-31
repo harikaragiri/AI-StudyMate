@@ -6,14 +6,14 @@ import os
 import PyPDF2
 from datetime import datetime
 
-# ---- Page Config ----
+
 st.set_page_config(
     page_title="AI StudyMate",
     page_icon="📘",
     layout="wide"
 )
 
-# ---- Title ----
+
 st.markdown("""
 <div style='text-align:center'>
     <h1 style='color:#4B0082;'> AI StudyMate</h1>
@@ -24,18 +24,18 @@ st.markdown("""
 DB_PATH = "endee_db.json"
 HISTORY_PATH = "search_history.json"
 
-# ---- Sidebar Navigation ----
+
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to", ["Search Questions", "Upload Notes", "Summarize Text", "Search History"])
 
-# ---- Load Embedding Model ----
+
 @st.cache_resource
 def load_model():
     return SentenceTransformer("all-MiniLM-L6-v2")
 
 model = load_model()
 
-# ---- Utility Functions ----
+
 def load_vector_db():
     if os.path.exists(DB_PATH):
         with open(DB_PATH, "r", encoding="utf-8") as f:
@@ -88,7 +88,7 @@ def chunk_text(text, chunk_size=300, overlap=50):
         start += chunk_size - overlap
     return chunks
 
-# ---- Search History Functions ----
+
 def load_history():
     if os.path.exists(HISTORY_PATH):
         with open(HISTORY_PATH, "r", encoding="utf-8") as f:
@@ -104,7 +104,7 @@ def save_history(query):
     with open(HISTORY_PATH, "w", encoding="utf-8") as f:
         json.dump(history[:50], f, indent=2)
 
-# ---- Summarization Function ----
+
 def summarize_text(text, top_k=3):
     sentences = [s.strip() for s in text.split(". ") if s.strip()]
     if not sentences:
@@ -121,9 +121,9 @@ def summarize_text(text, top_k=3):
         summary += "."
     return summary
 
-# ===================== PAGES ===================== #
 
-# ---- Search Questions ----
+
+
 if page == "Search Questions":
     st.subheader("Ask Your Question")
     texts, embeddings, metadata = load_vector_db()
@@ -151,7 +151,7 @@ if page == "Search Questions":
         else:
             st.warning("Please enter a question.")
 
-# ---- Upload Notes ----
+
 elif page == "Upload Notes":
     st.subheader("Upload Study Notes")
 
@@ -179,7 +179,7 @@ elif page == "Upload Notes":
             save_vector_db(texts, embeddings, metadata)
             st.success(f"Added {len(chunks)} chunks to database!")
 
-# ---- Summarize Text ----
+
 elif page == "Summarize Text":
     st.subheader("Text Summarizer")
 
@@ -196,7 +196,7 @@ elif page == "Summarize Text":
         else:
             st.warning("Enter some text.")
 
-# ---- Search History Page ----
+
 elif page == "Search History":
     st.subheader("Search History")
 
