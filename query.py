@@ -6,7 +6,7 @@ DB_PATH = "endee_db.json"
 
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
-# Load vector database
+
 with open(DB_PATH, "r", encoding="utf-8") as f:
     records = json.load(f)
 
@@ -32,7 +32,7 @@ def semantic_search(query, top_k=3):
     return results
 
 
-# Test search
+
 if __name__ == "__main__":
     user_query = input("Ask a question: ")
     results = semantic_search(user_query)
