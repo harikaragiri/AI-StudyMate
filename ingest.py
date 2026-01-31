@@ -2,7 +2,6 @@ from sentence_transformers import SentenceTransformer
 import os
 import json
 
-# Load embedding model
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 DB_PATH = "endee_db.json"
@@ -40,4 +39,4 @@ for i, text in enumerate(texts):
 with open(DB_PATH, "w", encoding="utf-8") as f:
     json.dump(records, f, indent=2)
 
-print("✅ Notes stored successfully in Endee-style Vector Database!")
+print(" Notes stored successfully in Endee-style Vector Database!")
