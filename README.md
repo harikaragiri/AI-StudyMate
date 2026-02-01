@@ -1,12 +1,6 @@
 # AI StudyMate – AI Powered Study Assistant
 
-AI StudyMate is basically this AI tool I put together to help out with studying. It works by letting students upload their notes or other materials, then search for answers in them pretty easily. You can also get summaries that are short and to the point, all thanks to semantic search and natural language processing stuff.
-
-That part about searching feels kind of important, since it pulls up relevant bits without you having to dig through everything manually. The project as a whole shows some practical ways to use AI, like handling documents efficiently and using vectors for retrieval.
-
-Streamlit makes the interface clean, which is nice because it does not get in the way. I am not totally sure if everything ties together perfectly yet, but it demonstrates real applications anyway. Vector-based retrieval seems to be the core for making those connections.
-
-Built as part of the Endee.io Technical Assignment, this project showcases skills in AI, NLP, Python, and full-stack application development.
+AI StudyMate is an AI-powered study assistant that allows students to upload notes, search for relevant answers, and generate concise summaries using semantic search and Natural Language Processing (NLP). It uses vector-based retrieval to deliver accurate and context-aware information from documents. Built with Python and Streamlit, the project showcases practical skills in AI, NLP, document processing, and intelligent information retrieval.
 
 ## FEATURES
  - Semantic Question Answering from uploaded study notes
