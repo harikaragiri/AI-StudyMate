@@ -50,43 +50,43 @@ streamlit run app.py
 http://localhost:8501
 
 ## HOW TO TEST THE WORKING OF THE USE CASE (IMPORTANT)
-# 1. Upload Study Notes
+### 1. Upload Study Notes
 
 - Upload a PDF or TXT file containing study material
 - The system automatically extracts and chunks the content
 
-# 2. Document Processing
+### 2. Document Processing
 
 - Text is converted into vector embeddings
 - Embeddings are stored in a local JSON-based vector database
 
-# 3. Ask a Question
+### 3. Ask a Question
 
 - Enter a question related to the uploaded notes
 - Example: “What is machine learning?”
 
-# 4. Semantic Search Execution
+### 4. Semantic Search Execution
 
 - Query is converted into an embedding
 - System finds the most relevant text chunks using cosine similarity
 
-# 5. View AI Answer
+### 5. View AI Answer
 
 - App displays a context-aware answer from the document
 - A short summary is generated when applicable
 
-# 6. Summarize Paragraph or Content 
+### 6. Summarize Paragraph or Content 
 
 - Paste any paragraph or section in the input box
 - The AI provides a concise summarized version of the text
 - Helps quickly understand large content
 
-# 7. Check Search History
+### 7. Check Search History
 
 - Previous user queries are stored in search_history.json
 - Confirms query tracking feature
 
-# 8. Test Multiple Queries
+### 8. Test Multiple Queries
 
 - Ask different questions to validate retrieval accuracy
 - Confirm responses change based on document content
