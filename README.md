@@ -49,15 +49,57 @@ streamlit run app.py
 4. Open Browser
 http://localhost:8501
 
-## How It Works (Technical Overview):
-1. Uploaded documents are split into chunks for efficient retrieval
-2. Each chunk is converted into a vector embedding using Sentence Transformers
-3. Embeddings are stored in a local vector database
-4. User questions are encoded into vectors
-5. The system performs cosine similarity matching to retrieve the most relevant answers
-6. A summarization module extracts the most informative sentences
-7. Query history is saved to enhance user experience
-This demonstrates applied AI, NLP pipelines, vector search systems, and scalable retrieval design.
+## HOW TO TEST THE WORKING OF THE USE CASE (IMPORTANT)
+
+Step 1 — Upload Study Notes
+
+Upload a PDF or TXT file containing study material
+
+The system automatically extracts and chunks the content
+
+Step 2 — Document Processing
+
+Text is converted into vector embeddings
+
+Embeddings are stored in a local JSON-based vector database
+
+Step 3 — Ask a Question
+
+Enter a question related to the uploaded notes
+
+Example: “What is machine learning?”
+
+Step 4 — Semantic Search Execution
+
+Query is converted into an embedding
+
+System finds the most relevant text chunks using cosine similarity
+
+Step 5 — View AI Answer
+
+App displays a context-aware answer from the document
+
+A short summary is generated when applicable
+
+Step 6 — Summarize Paragraph or Content 
+
+Paste any paragraph or section in the input box
+
+The AI provides a concise summarized version of the text
+
+Helps quickly understand large content
+
+Step 7 — Check Search History
+
+Previous user queries are stored in search_history.json
+
+Confirms query tracking feature
+
+Step 8 — Test Multiple Queries
+
+Ask different questions to validate retrieval accuracy
+
+Confirm responses change based on document content
 
 ## Real-World Use Cases
 
